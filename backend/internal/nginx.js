@@ -79,8 +79,12 @@ const internalNginx = {
 
 	reload: () => {
 		if (process.env.ACME_OCSP_STAPLING === 'true') {
-			return utils
-				.execFile('certbot-ocsp-fetcher.sh', ['-c', '/data/tls/certbot', '-o', '/data/tls/certbot/live', '--no-reload-webserver', '--quiet'])
+			utils
+				.execFile('certbot-ocsp-fetcher.sh', ['-c', '/data/tls/certbot/live', '-o', '/data/tls/certbot/live', '--no-reload-webserver', '--quiet'])
+				.catch(() => {})
+				.finally(() => {
+					utils.execFile('certbot-ocsp-fetcher.sh', ['-c', '/data/tls/custom', '-o', '/data/tls/custom', '--no-reload-webserver', '--quiet']);
+				})
 				.catch(() => {})
 				.finally(() => {
 					logger.info('Reloading Nginx');

@@ -39,6 +39,18 @@ fi
 sha512sum < /data/.env > /tmp/env.sha512sum
 
 
+if [ -n "$NC_AIO" ] && ! echo "$NC_AIO" | grep -q "^true$\|^false$"; then
+    echo "NC_AIO needs to be true or false."
+    sleep inf
+fi
+if [ "$NC_AIO" = "true" ]; then
+    if [ -z "$NC_DOMAIN" ]; then
+        echo "NC_DOMAIN is required in AIO mode."
+        sleep inf
+    fi
+    export DISABLE_HTTP="${DISABLE_HTTP:-true}"
+fi
+
 export ACME_SERVER="${ACME_SERVER:-https://acme-v02.api.letsencrypt.org/directory}"
 export ACME_MUST_STAPLE="${ACME_MUST_STAPLE:-false}"
 export ACME_OCSP_STAPLING="${ACME_OCSP_STAPLING:-true}"
@@ -71,6 +83,8 @@ export NGINX_404_REDIRECT="${NGINX_404_REDIRECT:-false}"
 export NGINX_HSTS_SUBDMAINS="${NGINX_HSTS_SUBDMAINS:-true}"
 export X_FRAME_OPTIONS="${X_FRAME_OPTIONS:-deny}"
 export NGINX_DISABLE_PROXY_BUFFERING="${NGINX_DISABLE_PROXY_BUFFERING:-false}"
+export NGINX_WORKER_PROCESSES="${NGINX_WORKER_PROCESSES:-auto}"
+export NGINX_LOAD_OPENAPPSEC_ATTACHMENT_MODULE="${NGINX_LOAD_OPENAPPSEC_ATTACHMENT_MODULE:-false}"
 export DISABLE_NGINX_BEAUTIFIER="${DISABLE_NGINX_BEAUTIFIER:-false}"
 export FULLCLEAN="${FULLCLEAN:-false}"
 export SKIP_IP_RANGES="${SKIP_IP_RANGES:-false}"
@@ -327,6 +341,11 @@ if ! echo "$NGINX_DISABLE_PROXY_BUFFERING" | grep -q "^true$\|^false$"; then
     sleep inf
 fi
 
+if ! echo "$NGINX_WORKER_PROCESSES" | grep -q "^auto$\|^[0-9]\+$"; then
+    echo "NGINX_WORKER_PROCESSES needs to be auto or a number."
+    sleep inf
+fi
+
 if ! echo "$DISABLE_NGINX_BEAUTIFIER" | grep -q "^true$\|^false$"; then
     echo "DISABLE_NGINX_BEAUTIFIER needs to be true or false."
     sleep inf
@@ -459,21 +478,7 @@ if [ -n "$INITIAL_DEFAULT_PAGE" ] && ! echo "$INITIAL_DEFAULT_PAGE" | grep -q "^
 fi
 
 
-if [ -n "$NC_AIO" ] && ! echo "$NC_AIO" | grep -q "^true$\|^false$"; then
-    echo "NC_AIO needs to be true or false."
-    sleep inf
-fi
-
-if [ "$NC_AIO" = "true" ]; then
-    export DISABLE_HTTP="true"
-    if [ -z "$NC_DOMAIN" ]; then
-        echo "NC_DOMAIN is required in AIO mode."
-        sleep inf
-    fi
-fi
-
-
-export TV="1"
+export TV="2"
 if [ ! -s /data/npmplus/env.sha512sum ] || [ "$(cat /data/npmplus/env.sha512sum)" != "$( (grep "env\.[A-Z0-9_]\+" -roh /app/templates | sed "s|env.||g" | sort | uniq | xargs printenv; echo "$TV") | tr -d "\n" | sha512sum | cut -d" " -f1)" ]; then
     echo "At least one env or the template version changed, all hosts will be regenerated."
     export REGENERATE_ALL="true"
@@ -861,16 +866,16 @@ fi
 sed -i "s|48681|$NIBEP|g" /usr/local/nginx/conf/conf.d/npm.conf
 sed -i "s|48691|$GOAIWSP|g" /usr/local/nginx/conf/conf.d/include/goaccess.conf
 
-sed -i "s|#\?listen 0.0.0.0:81|listen $NPM_IPV4_BINDING:$NPM_PORT|g" /usr/local/nginx/conf/conf.d/npm.conf
-sed -i "s|#\?listen 0.0.0.0:91|listen $GOA_IPV4_BINDING:$GOA_PORT|g" /usr/local/nginx/conf/conf.d/include/goaccess.conf
+sed -i "s|#\?listen 0.0.0.0:81 |listen $NPM_IPV4_BINDING:$NPM_PORT |g" /usr/local/nginx/conf/conf.d/npm.conf
+sed -i "s|#\?listen 0.0.0.0:91 |listen $GOA_IPV4_BINDING:$GOA_PORT |g" /usr/local/nginx/conf/conf.d/include/goaccess.conf
 
 if [ "$DISABLE_IPV6" = "true" ]; then
     sed -i "s|ipv6=on;|ipv6=off;|g" /usr/local/nginx/conf/nginx.conf
-    sed -i "s|#\?listen \[::\]:81|#listen $NPM_IPV6_BINDING:$NPM_PORT|g" /usr/local/nginx/conf/conf.d/npm.conf
-    sed -i "s|#\?listen \[::\]:91|#listen $GOA_IPV6_BINDING:$GOA_PORT|g" /usr/local/nginx/conf/conf.d/include/goaccess.conf
+    sed -i "s|#\?listen \[::\]:81 |#listen $NPM_IPV6_BINDING:$NPM_PORT |g" /usr/local/nginx/conf/conf.d/npm.conf
+    sed -i "s|#\?listen \[::\]:91 |#listen $GOA_IPV6_BINDING:$GOA_PORT |g" /usr/local/nginx/conf/conf.d/include/goaccess.conf
 else
-    sed -i "s|#\?listen \[::\]:81|listen $NPM_IPV6_BINDING:$NPM_PORT|g" /usr/local/nginx/conf/conf.d/npm.conf
-    sed -i "s|#\?listen \[::\]:91|listen $GOA_IPV6_BINDING:$GOA_PORT|g" /usr/local/nginx/conf/conf.d/include/goaccess.conf
+    sed -i "s|#\?listen \[::\]:81 |listen $NPM_IPV6_BINDING:$NPM_PORT |g" /usr/local/nginx/conf/conf.d/npm.conf
+    sed -i "s|#\?listen \[::\]:91 |listen $GOA_IPV6_BINDING:$GOA_PORT |g" /usr/local/nginx/conf/conf.d/include/goaccess.conf
 fi
 
 if [ "$GOA" = "true" ]; then
@@ -892,6 +897,12 @@ fi
 if [ "$NGINX_DISABLE_PROXY_BUFFERING" = "true" ]; then
     sed -i "s|proxy_buffering.*|proxy_buffering off;|g" /usr/local/nginx/conf/nginx.conf
     sed -i "s|proxy_request_buffering.*|proxy_request_buffering off;|g" /usr/local/nginx/conf/nginx.conf
+fi
+if [ "$NGINX_WORKER_PROCESSES" != "auto" ]; then
+    sed -i "s|worker_processes.*|worker_processes $NGINX_WORKER_PROCESSES;|g" /usr/local/nginx/conf/nginx.conf
+fi
+if [ "$NGINX_LOAD_OPENAPPSEC_ATTACHMENT_MODULE" = "true" ]; then
+    sed -i "s|#load_module /usr/local/lib/libngx_module.so;|load_module /usr/local/lib/libngx_module.so;|g" /usr/local/nginx/conf/nginx.conf
 fi
 if [ "$NGINX_HSTS_SUBDMAINS" = "false" ]; then
     sed -i "s|includeSubDomains; ||g" /usr/local/nginx/conf/nginx.conf

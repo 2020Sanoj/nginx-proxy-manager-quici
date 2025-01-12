@@ -71,7 +71,8 @@ if [ ! -d /data/tls/certbot/accounts/"$(echo "$ACME_SERVER" | sed "s|^https\?://
 fi
 
 if [ "$ACME_OCSP_STAPLING" = "true" ]; then
-    certbot-ocsp-fetcher.sh -c /data/tls/certbot -o /data/tls/certbot/live --no-reload-webserver || true
+    certbot-ocsp-fetcher.sh -c /data/tls/certbot/live -o /data/tls/certbot/live --no-reload-webserver --force-update || true
+    certbot-ocsp-fetcher.sh -c /data/tls/custom -o /data/tls/custom --no-reload-webserver --force-update || true
     echo
 fi
 if [ "$LOGROTATE" = "true" ]; then touch /data/logrotate.lock; else rm -f /data/logrotate.lock; fi

@@ -38,6 +38,7 @@ so that the barrier for entry here is low.
     - Try to whitelist the Content-Type you are sending (for example, `application/activity+json` for Mastodon and `application/dns-message` for DoH).
     - Try to whitelist the HTTP request method you are using (for example, `PUT` is blocked by default, which also blocks NPMplus UI).
   - CoreRuleSet plugins are supported, you can find a guide in this readme
+- option to load the openappsec attachment module, see compose.yaml for details
 - Darkmode button in the footer for comfortable viewing (CSS done by [@theraw](https://github.com/theraw))
 - Fixes proxy to https origin when the origin only accepts TLSv1.3
 - Only enables TLSv1.2 and TLSv1.3 protocols, also ML-KEM support
@@ -134,6 +135,13 @@ name: appsec
 source: appsec
 labels:
   type: appsec
+# if you use openappsec you can enable this
+#---
+#source: docker
+#container_name:
+# - openappsec-agent
+#labels:
+#  type: openappsec
 ```
 4. make sure to use `network_mode: host` in your compose file
 5. run `docker exec crowdsec cscli bouncers add npmplus -o raw` and save the output

@@ -2,6 +2,8 @@
   "access-lists": {
     "access": "Zugang",
     "access-add": "Hinzufügen",
+    "access-basic": "Basic Authorization via <a href=\"{url}\" target=\"_blank\">Nginx HTTP Basic Authentication</a>",
+    "access-ip": "IP Adressen Whitelist/Blacklist via <a href=\"{url}\" target=\"_blank\">Nginx HTTP Access</a>",
     "add": "Zugangsliste hinzufügen",
     "auth-add": "Hinzufügen",
     "authorization": "Autorisierung",
@@ -115,7 +117,8 @@
     "copy-npmplus": " - und &copy; 2024 <a href=\"{url}\" target=\"_blank\">ZoeyVid</a> NPMplus",
     "license": " - MIT-Lizenz",
     "repo": "Repository auf GitHub",
-    "theme": " - Thema von <a href=\"{url}\" target=\"_blank\">Tabler v0.0.31</a>"
+    "theme": " - Thema von <a href=\"{url}\" target=\"_blank\">Tabler v0.0.31</a>",
+    "toggle-dark": "Dark Modus ein-/ausschalten"
   },
   "locations": {
     "delete": "Löschen",

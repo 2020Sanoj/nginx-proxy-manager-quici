@@ -41,13 +41,13 @@ if (isAuthenticated()) {
     <h1 class="text-3xl md:text-6xl font-bold mt-3 mb-6 mx-0">NPMplus - Login</h1>
     <form method="post" class="grid grid-cols-1 gap-y-4 md:grid-cols-4 md:grid-rows-4">
         <label for="email" class="mr-2 text-left md:text-right">E-Mail:</label>
-        <input type="email" name="email" id="email" maxlength="255" placeholder="E-Mail" class="h-8 rounded-lg bg-transparent border border-zinc-600 dark:border-zinc-300 outline-none focus:ring-1 ring-offset-1 transition-shadow shadow-black dark:shadow-white ring-zinc-500 dark:ring-zinc-200 py-2 px-3 md:col-span-2" required>
+        <input type="email" name="email" id="email" maxlength="255" placeholder="E-Mail" class="h-8 rounded-lg bg-transparent border border-zinc-600 dark:border-zinc-300 outline-hidden focus:ring-1 ring-offset-1 transition-shadow shadow-black dark:shadow-white ring-zinc-500 dark:ring-zinc-200 py-2 px-3 md:col-span-2" required>
         <span class="hidden md:block"></span>
         <label for="pswd" class="mr-2 text-left md:text-right">Password:</label>
-        <input type="password" name="pswd" id="pswd" maxlength="255" placeholder="Password" class="h-8 rounded-lg bg-transparent border border-zinc-600 dark:border-zinc-300 outline-none focus:ring-1 ring-offset-1 transition-shadow shadow-black dark:shadow-white ring-zinc-500 dark:ring-zinc-200 py-2 px-3 md:col-span-2" required>
+        <input type="password" name="pswd" id="pswd" maxlength="255" placeholder="Password" class="h-8 rounded-lg bg-transparent border border-zinc-600 dark:border-zinc-300 outline-hidden focus:ring-1 ring-offset-1 transition-shadow shadow-black dark:shadow-white ring-zinc-500 dark:ring-zinc-200 py-2 px-3 md:col-span-2" required>
         <span class="hidden md:block"></span>
         <label for="totp" class="mr-2 text-left md:text-right">TOTP:</label>
-        <input type="text" name="totp" id="totp" maxlength="6" placeholder="TOTP" class="h-8 rounded-lg bg-transparent border border-zinc-600 dark:border-zinc-300 outline-none focus:ring-1 ring-offset-1 transition-shadow shadow-black dark:shadow-white ring-zinc-500 dark:ring-zinc-200 py-2 px-3 md:col-span-2">
+        <input type="text" name="totp" id="totp" maxlength="6" placeholder="TOTP" class="h-8 rounded-lg bg-transparent border border-zinc-600 dark:border-zinc-300 outline-hidden focus:ring-1 ring-offset-1 transition-shadow shadow-black dark:shadow-white ring-zinc-500 dark:ring-zinc-200 py-2 px-3 md:col-span-2">
         <span class="hidden md:block"></span>
         <!--<div class="h-captcha" data-sitekey="<?php //echo $hcaptcha_key;
         ?>"></div>--> 

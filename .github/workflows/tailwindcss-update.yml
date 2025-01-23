@@ -10,7 +10,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - run: cp -v src/tailwind.config.js tailwind.config.js
       - name: update tailwindcss (minify)
         uses: ZoeyVid/tailwindcss-update@main
         with:

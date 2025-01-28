@@ -246,7 +246,10 @@ location /outpost.goauthentik.io {
     proxy_set_header Upgrade $http_upgrade;
     proxy_set_header Connection $connection_upgrade;
     include conf.d/include/proxy-headers.conf;
-    proxy_pass https://<ip>:9443/outpost.goauthentik.io; # ensure the host of this vserver matches your external URL you've configured in authentik
+    # When using the embedded outpost, use:
+    #proxy_pass http://authentik.company:9000/outpost.goauthentik.io;
+    # For manual outpost deployments:
+    #proxy_pass http://outpost.company:9000$request_uri;
 
     proxy_set_header X-Original-URL $scheme://$host$request_uri;
     more_set_headers 'Set-Cookie: $auth_cookie';
@@ -258,7 +261,9 @@ location /outpost.goauthentik.io {
 location @goauthentik_proxy_signin {
     internal;
     more_set_headers 'Set-Cookie: $auth_cookie';
-    return 302 /outpost.goauthentik.io/start?rd=$request_uri;
+    return 302 /outpost.goauthentik.io/start?rd=$scheme://$host$request_uri;
+    # For domain level, use the below error_page to redirect to your authentik server with the full redirect path
+    # return 302 https://authentik.company/outpost.goauthentik.io/start?rd=$scheme://$host$request_uri;
 }
 ```
 

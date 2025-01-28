@@ -215,7 +215,6 @@ upstream service2 {
 
 ### authentik advanced config example (no guarantee for security of it)
 ```
-port_in_redirect off;
 location / {
     # if you want to enable websockets
     #proxy_set_header Upgrade $http_upgrade;
@@ -225,9 +224,6 @@ location / {
     proxy_pass $forward_scheme://$server:$port$request_uri;
 
     auth_request /outpost.goauthentik.io/auth/nginx;
-    error_page 401 = @goauthentik_proxy_signin;
-    auth_request_set $auth_cookie $upstream_http_set_cookie;
-    more_set_headers 'Set-Cookie: $auth_cookie';
     auth_request_set $authentik_username $upstream_http_x_authentik_username;
     auth_request_set $authentik_groups $upstream_http_x_authentik_groups;
     auth_request_set $authentik_entitlements $upstream_http_x_authentik_entitlements;
@@ -240,6 +236,13 @@ location / {
     proxy_set_header X-authentik-email $authentik_email;
     proxy_set_header X-authentik-name $authentik_name;
     proxy_set_header X-authentik-uid $authentik_uid;
+
+    auth_request_set $auth_cookie $upstream_http_set_cookie;
+    more_set_headers 'Set-Cookie: $auth_cookie';
+
+    error_page 401 =302 /outpost.goauthentik.io/start?rd=$scheme://$host$request_uri;
+    # For domain level, use the below error_page to redirect to your authentik server with the full redirect path
+    #error_page 401 =302 https://authentik.company/outpost.goauthentik.io/start?rd=$scheme://$host$request_uri;
     
     # This section should be uncommented when the "Send HTTP Basic authentication" option is enabled in the proxy provider
     #auth_request_set $authentik_auth $upstream_http_authorization;
@@ -254,19 +257,51 @@ location /outpost.goauthentik.io {
     # For manual outpost deployments:
     #proxy_pass http://outpost.company:9000$request_uri;
 
-    proxy_set_header X-Original-URL $scheme://$host$request_uri;
     more_set_headers 'Set-Cookie: $auth_cookie';
     auth_request_set $auth_cookie $upstream_http_set_cookie;
+
+    internal;
     proxy_pass_request_body off;
     proxy_set_header Content-Length "";
+    proxy_set_header Connection "";
+    proxy_set_header X-Original-URL $scheme://$host$request_uri;
+}
+```
+
+### authelia advanced config example (no guarantee for security of it)
+```
+location / {
+    # if you want to enable websockets
+    #proxy_set_header Upgrade $http_upgrade;
+    #proxy_set_header Connection $connection_upgrade;
+
+    include conf.d/include/proxy-headers.conf;
+    proxy_pass $forward_scheme://$server:$port$request_uri;
+
+    auth_request /internal/authelia/authz;
+    auth_request_set $user $upstream_http_remote_user;
+    auth_request_set $groups $upstream_http_remote_groups;
+    auth_request_set $name $upstream_http_remote_name;
+    auth_request_set $email $upstream_http_remote_email;
+    proxy_set_header Remote-User $user;
+    proxy_set_header Remote-Groups $groups;
+    proxy_set_header Remote-Email $email;
+    proxy_set_header Remote-Name $name;
+
+    auth_request_set $redirection_url $upstream_http_location;
+    error_page 401 =302 $redirection_url;
 }
 
-location @goauthentik_proxy_signin {
+location /internal/authelia/authz {
+    include conf.d/include/proxy-headers.conf;
+    proxy_pass http://<ip>:<port>/api/verify; # change to ip and port of authelia
+
     internal;
-    more_set_headers 'Set-Cookie: $auth_cookie';
-    return 302 /outpost.goauthentik.io/start?rd=$scheme://$host$request_uri;
-    # For domain level, use the below error_page to redirect to your authentik server with the full redirect path
-    # return 302 https://authentik.company/outpost.goauthentik.io/start?rd=$scheme://$host$request_uri;
+    proxy_pass_request_body off;
+    proxy_set_header Content-Length "";
+    proxy_set_header Connection "";
+    proxy_set_header X-Original-Method $request_method;
+    proxy_set_header X-Original-URL $scheme://$http_host$request_uri;
 }
 ```
 

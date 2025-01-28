@@ -260,6 +260,7 @@ location /outpost.goauthentik.io {
     more_set_headers 'Set-Cookie: $auth_cookie';
     auth_request_set $auth_cookie $upstream_http_set_cookie;
 
+    internal;
     proxy_method GET;
     proxy_pass_request_body off;
     proxy_set_header Content-Length "";
@@ -295,6 +296,7 @@ location /internal/authelia/authz {
     include conf.d/include/proxy-headers.conf;
     proxy_pass http://<ip>:<port>/api/verify; # change to ip and port of authelia
 
+    internal;
     proxy_method GET;
     proxy_pass_request_body off;
     proxy_set_header Content-Length "";

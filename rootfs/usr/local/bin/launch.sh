@@ -52,7 +52,6 @@ else
 fi
 
 if [ "$CUSTOM_OCSP_STAPLING" = "true" ]; then
-    rm -f /data/tls/custom/*.der
     certbot-ocsp-fetcher.sh -c /data/tls/custom -o /data/tls/custom --no-reload-webserver --force-update || true
     echo
 else

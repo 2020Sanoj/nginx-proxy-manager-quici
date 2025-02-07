@@ -219,7 +219,7 @@ upstream service2 {
 auth_request /outpost.goauthentik.io/auth/nginx;
 error_page 401 = @goauthentik_proxy_signin;
 auth_request_set $auth_cookie $upstream_http_set_cookie;
-more_set_headers 'Set-Cookie: $auth_cookie';
+add_header Set-Cookie $auth_cookie;
 auth_request_set $authentik_username $upstream_http_x_authentik_username;
 auth_request_set $authentik_groups $upstream_http_x_authentik_groups;
 auth_request_set $authentik_entitlements $upstream_http_x_authentik_entitlements;
@@ -240,7 +240,7 @@ proxy_set_header X-authentik-uid $authentik_uid;
 2. create a location with the path `/outpost.goauthentik.io`, this should proxy to your authentik, examples: http://authentik.company:9000/outpost.goauthentik.io (embedded outpost) or http://outpost.company:9000 (manual outpost deployments), then press the gear button and paste the following in the new text field
 ```
 auth_request_set $auth_cookie $upstream_http_set_cookie;
-more_set_headers 'Set-Cookie: $auth_cookie';
+add_header Set-Cookie $auth_cookie;
 proxy_method GET;
 proxy_pass_request_body off;
 proxy_set_header Content-Length "";

@@ -77,6 +77,7 @@ export HTTP_PORT="${HTTP_PORT:-80}"
 export HTTPS_PORT="${HTTPS_PORT:-443}"
 export HTTP3_ALT_SVC_PORT="${HTTP3_ALT_SVC_PORT:-443}"
 export DISABLE_HTTP="${DISABLE_HTTP:-false}"
+export LISTEN_PROXY_PROTOCOL="${LISTEN_PROXY_PROTOCOL:-false}"
 export DISABLE_H3_QUIC="${DISABLE_H3_QUIC:-false}"
 export NGINX_QUIC_BPF="${NGINX_QUIC_BPF:-false}"
 export NGINX_ACCESS_LOG="${NGINX_ACCESS_LOG:-false}"
@@ -310,6 +311,11 @@ fi
 
 if ! echo "$DISABLE_HTTP" | grep -q "^true$\|^false$"; then
     echo "DISABLE_HTTP needs to be true or false."
+    sleep inf
+fi
+
+if ! echo "$LISTEN_PROXY_PROTOCOL" | grep -q "^true$\|^false$"; then
+    echo "LISTEN_PROXY_PROTOCOL needs to be true or false."
     sleep inf
 fi
 

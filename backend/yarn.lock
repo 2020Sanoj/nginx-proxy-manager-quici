@@ -1613,10 +1613,10 @@ levn@^0.4.1:
     prelude-ls "^1.2.1"
     type-check "~0.4.0"
 
-liquidjs@10.20.2:
-  version "10.20.2"
-  resolved "https://registry.yarnpkg.com/liquidjs/-/liquidjs-10.20.2.tgz#ae51ab0710505b7655fda5e223c1a12edf32bb15"
-  integrity sha512-MbAueOtO8aH+GzC/kmhcJTiMrMu+MVel/3+yhFVmP3K89WP0ZuvVPi8ZRKCHAO6SLJvV0Y0Jz6tUEy6Hg8xO/g==
+liquidjs@10.20.3:
+  version "10.20.3"
+  resolved "https://registry.yarnpkg.com/liquidjs/-/liquidjs-10.20.3.tgz#20fe257272308cccaa89cd2625248d5181522fcc"
+  integrity sha512-lSrPyIKT/ft0BJuZsz+QaWLclj4LY0v8X11K/VDTze4MrHGUedXSn3xuLL1MssBuaA49tNI+ZGI72fRpYSTLFg==
   dependencies:
     commander "^10.0.0"
 

@@ -74,7 +74,7 @@ so that the barrier for entry here is low.
 - fixed smaller issues/bugs
 - other small changes/improvements
 
-## migration (currently not working when migrating from upstream 2.12.3)
+## migration
 - **NOTE: migrating back to the original is not possible**, so make first a **backup** before migration, so you can use the backup to switch back
 - please delete all certs using dnspod as dns provider and recreate them after migration, since the certbot plugin used was replaced
 - stop nginx-proxy-manager download the latest compose.yaml, adjust your paths (of /etc/letsencrypt and /data) to the ones you used with nginx-proxy-manager and adjust the envs of the compose file how you like it and then deploy it

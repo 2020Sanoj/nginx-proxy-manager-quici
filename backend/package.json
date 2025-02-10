@@ -11,8 +11,8 @@
     "batchflow": "0.4.0",
     "bcrypt": "5.1.1",
     "better-sqlite3": "11.8.1",
-    "body-parser": "2.0.2",
-    "compression": "1.7.5",
+    "body-parser": "2.1.0",
+    "compression": "1.8.0",
     "express": "4.21.2",
     "express-fileupload": "1.5.1",
     "gravatar": "1.8.2",
@@ -25,7 +25,7 @@
     "node-rsa": "1.1.1",
     "objection": "3.1.5",
     "path": "0.12.7",
-    "pg": "8.13.1",
+    "pg": "8.13.2",
     "signale": "1.4.0"
   },
   "author": "Jamie Curnow <jc@jc21.com> and ZoeyVid <zoeyvid@zvcdn.de>",
@@ -33,7 +33,7 @@
   "devDependencies": {
     "@apidevtools/swagger-parser": "10.1.1",
     "@eslint/js": "9.20.0",
-    "eslint": "9.20.0",
+    "eslint": "9.20.1",
     "eslint-config-prettier": "10.0.1",
     "eslint-plugin-prettier": "5.2.3",
     "globals": "15.14.0",

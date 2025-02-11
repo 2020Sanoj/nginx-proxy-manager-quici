@@ -2139,15 +2139,15 @@ pg-int8@1.0.1:
   resolved "https://registry.yarnpkg.com/pg-int8/-/pg-int8-1.0.1.tgz#943bd463bf5b71b4170115f80f8efc9a0c0eb78c"
   integrity sha512-WCtabS6t3c8SkpDBUlb1kjOs7l66xsGdKpIPZsg4wR+B3+u9UAum2odSsF9tnvxg80h4ZxLWMy4pRjOsFIqQpw==
 
-pg-pool@^3.7.0:
-  version "3.7.0"
-  resolved "https://registry.yarnpkg.com/pg-pool/-/pg-pool-3.7.0.tgz#d4d3c7ad640f8c6a2245adc369bafde4ebb8cbec"
-  integrity sha512-ZOBQForurqh4zZWjrgSwwAtzJ7QiRX0ovFkZr2klsen3Nm0aoh33Ls0fzfv3imeH/nw/O27cjdz5kzYJfeGp/g==
+pg-pool@^3.7.1:
+  version "3.7.1"
+  resolved "https://registry.yarnpkg.com/pg-pool/-/pg-pool-3.7.1.tgz#d1aaf618618d8f878acf185e86084928b8cd5b3c"
+  integrity sha512-xIOsFoh7Vdhojas6q3596mXFsR8nwBQBXX5JiV7p9buEVAGqYL4yFzclON5P9vFrpu1u7Zwl2oriyDa89n0wbw==
 
-pg-protocol@^1.7.0:
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/pg-protocol/-/pg-protocol-1.7.0.tgz#ec037c87c20515372692edac8b63cf4405448a93"
-  integrity sha512-hTK/mE36i8fDDhgDFjy6xNOG+LCorxLG3WO17tku+ij6sVHXh1jQUJ8hYAnRhNla4QVD2H8er/FOjc/+EgC6yQ==
+pg-protocol@^1.7.1:
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/pg-protocol/-/pg-protocol-1.7.1.tgz#aad61a6f927b51e89dcf721408b76c0e536d43dc"
+  integrity sha512-gjTHWGYWsEgy9MsY0Gp6ZJxV24IjDqdpTW7Eh0x+WfJLFsm/TJx1MzL6T0D88mBvkpxotCQ6TwW6N+Kko7lhgQ==
 
 pg-types@^2.1.0:
   version "2.2.0"
@@ -2160,14 +2160,14 @@ pg-types@^2.1.0:
     postgres-date "~1.0.4"
     postgres-interval "^1.1.0"
 
-pg@8.13.1:
-  version "8.13.1"
-  resolved "https://registry.yarnpkg.com/pg/-/pg-8.13.1.tgz#6498d8b0a87ff76c2df7a32160309d3168c0c080"
-  integrity sha512-OUir1A0rPNZlX//c7ksiu7crsGZTKSOXJPgtNiHGIlC9H0lO+NC6ZDYksSgBYY/thSWhnSRBv8w1lieNNGATNQ==
+pg@8.13.2:
+  version "8.13.2"
+  resolved "https://registry.yarnpkg.com/pg/-/pg-8.13.2.tgz#1839ce186f10cd95a77932f04d36f08e37c67827"
+  integrity sha512-L5QkPvTjVWWHbLaFjCkOSplpb2uCiRYbg0IJ2okCy5ClYfWlSgDDnvdR6dyw3EWAH2AfS4j8E61QFI7gLfTtlw==
   dependencies:
     pg-connection-string "^2.7.0"
-    pg-pool "^3.7.0"
-    pg-protocol "^1.7.0"
+    pg-pool "^3.7.1"
+    pg-protocol "^1.7.1"
     pg-types "^2.1.0"
     pgpass "1.x"
   optionalDependencies:
